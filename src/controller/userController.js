@@ -33,6 +33,7 @@ const genrateAccessorRefreshTokens = async (userId) => {
 
 console.log("generateAccessorRefreshToken",genrateAccessorRefreshTokens);
 
+console.log('Deepak');
 
 const registerUser = asyncHandler(async (req, res) => {
   // get user details from frontend

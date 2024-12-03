@@ -26,11 +26,11 @@ router.route('/login').post(loginUser)
 // Secure Routes
 router.route('/logout').post(verifyJwt, loggedOutUser)
 router.route("/refresh-token").post(refereshAccessToken)
-router.route('/change-password').post(verifyJwt,changeCurrentUSerPassword)
+router.route('/change-password').patch(verifyJwt,changeCurrentUSerPassword)
 router.route('/current-user').get(verifyJwt,getCurrentUser)
 router.route('/update-account').patch(verifyJwt,updateAccountDetails)
 router.route('/avatar').patch(verifyJwt,upload.single("avatar"), updateUserAvatar)
-router.route('/cover-image').patch(verifyJwt,upload.single("coverImage"), updateCoverImage)
+router.route('/coverimage').patch(verifyJwt,upload.single("coverImage"), updateCoverImage)
 router.route('/c/:userName').get(verifyJwt, getUserChannelProfile)
 router.route('/history').get(verifyJwt,getUserWatchHistory)
 

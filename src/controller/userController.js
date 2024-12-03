@@ -33,7 +33,6 @@ const genrateAccessorRefreshTokens = async (userId) => {
 
 console.log("generateAccessorRefreshToken",genrateAccessorRefreshTokens);
 
-console.log('Deepak');
 
 const registerUser = asyncHandler(async (req, res) => {
   // get user details from frontend
@@ -264,7 +263,7 @@ const changeCurrentUSerPassword = asyncHandler (async(req,res) =>{
     throw new ApiError(400, "Invalid User Password, Check Your Password and tryAgain!")
    }
 
-   newPassword = user.password
+    user.password = newPassword
 
     if(newPassword !== confirmPassword) {
        throw ApiError(401, "Password Not Match, Please Check and TryAgain!")
@@ -275,7 +274,7 @@ const changeCurrentUSerPassword = asyncHandler (async(req,res) =>{
     return res 
     .status(200)
     .json(
-      new ApiResponse(200, {}, "Password Change SuccessFully!")
+      new ApiResponse(200, {newPassword}, "Password Change SuccessFully!")
     )
 })
 
@@ -289,43 +288,43 @@ const getCurrentUser = asyncHandler(async(req,res) =>{
 
 })
 
-const updateAccountDetails = asyncHandler(async(req,res) =>{
+const updateAccountDetails = asyncHandler(async (req, res) => {
 
- const {fullName,email} = req.body
+  const { fullName } = req.body
 
-  if(!(fullName || email)) {
-    throw new ApiError(400, "Please give All user Details!")
-  }
-
- const user = await User.findByIdAndUpdate(req.user?._id, 
-  {
-    $set : {
-      fullName,
-      email
-    } 
-  },
-  {new : true}
- ).select ("-password")
-
- return res 
- .status(200)
- .json(
-  new ApiResponse(200, user, "User Account Update SuccesFully")
- )
-
-})
-
-const updateUserAvatar  = asyncHandler(async(req,res) => {
-
-  const avatarLocalPath = req.file?.avatar
-  
-
-  if(!avatarLocalPath) {
-    throw ApiError(404,"We Cannot Fetch Your Avatar Request")
+  if (!fullName) {
+    throw new ApiError(400, "Please provide the fullName");
   }
 
   const user = await User.findById(req.user?._id);
-  const currentAvatarUrl = user?.avatar;
+
+  if (!user) {
+    throw new ApiError(404, "User not found");
+  }
+
+  const updatedUser = await User.findByIdAndUpdate(
+    req.user?._id,
+    { $set: { fullName } },
+    { new: true }
+  ).select("-password");  
+
+  return res.status(200).json(
+    new ApiResponse(200, updatedUser, "Full name updated successfully")
+  );
+});
+
+
+const updateUserAvatar  = asyncHandler(async(req,res) => {
+
+  const avatarLocalPath = req.file?.path
+  
+
+  if(!avatarLocalPath) {
+    throw new ApiError(404,"We Cannot Fetch Your Avatar Request")
+  }
+
+  const user = await User.findById(req.user?._id);
+  const currentAvatarUrl = user?.path;
 
 
   if(currentAvatarUrl) {
@@ -347,7 +346,9 @@ const updateUserAvatar  = asyncHandler(async(req,res) => {
         avatar: avatar?.url
       }
     },
-    {new :  true}
+    {
+      new :  true
+    }
   ).select("-password")
 
   
@@ -363,7 +364,7 @@ const updateUserAvatar  = asyncHandler(async(req,res) => {
 
 const updateCoverImage  = asyncHandler(async(req,res) => {
 
-  const coverImageLocalPath = req.file?.avatar
+  const coverImageLocalPath = req.file?.path
 
   if(!coverImageLocalPath) {
     throw ApiError(404,"We Cannot Fetch Your Avatar Request")
@@ -504,7 +505,7 @@ const getUserWatchHistory = asyncHandler(async(req,res) =>{
   return res
   .status (200)
   .json(
-    new ApiResponse(200, user[0].WatchHistory, "History data fetched. Here are your past activities.")
+    new ApiResponse(200,  user.WatchHistory, "History data fetched. Here are your past activities.")
   )
 })
 

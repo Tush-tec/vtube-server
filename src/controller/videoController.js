@@ -1,5 +1,4 @@
-import mongoose, { Schema } from "mongoose";
-import upload from "../middleware/multer.middleware.js";
+import mongoose, { isValidObjectId, Schema } from "mongoose";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
@@ -148,12 +147,14 @@ const publishVideo = asyncHandler(async (req, res) => {
 
     // Save video details in the database
     const videoCreation = await Video.create({
+
       videoFile: videoUploadResponse.secure_url,
       thumbnail: thumbnailUploadResponse.secure_url,
-      owner: req.user._id,
+      owner: req.user?._id,
       title,
       description,
       duration: videoUploadResponse.duration,
+
     });
 
     return res.status(201).json(
@@ -233,11 +234,21 @@ const deleteVideo = asyncHandler(async (req, res) => {
 });
 
 // Toggle Video Publish Status
-const togglePublishStatus = asyncHandler(async (req, res) => {
-  const { videoId } = req.params;
 
+const togglePublishStatus = asyncHandler(async (req, res) => {
   try {
-    const video = await Video.findById(videoId);
+    const { videoId } = req.params;
+
+    if (!isValidObjectId(videoId)) {
+      throw new ApiError(400, "Invalid video ID format");
+    }
+
+    console.log("Received videoId:", videoId);
+
+
+    const cleanedVideoId = videoId.trim();
+
+    const video = await Video.findById(cleanedVideoId);
     if (!video) {
       throw new ApiError(404, "Video not found");
     }
@@ -255,6 +266,7 @@ const togglePublishStatus = asyncHandler(async (req, res) => {
     throw new ApiError(500, error.message || "Could not toggle video publish status");
   }
 });
+
 
 export {
   getAllVideo,

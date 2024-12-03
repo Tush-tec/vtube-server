@@ -6,14 +6,6 @@ import mongoose from "mongoose";
 import { Video } from "../models/video.model.js";
 
 const VideoLike = asyncHandler(async (req, res) => {
-  //  Retrieve video ID from request parameters (req.params)
-  //  Find video document by ID using Video.findById()
-  //  Check if video exists
-  //  Check if user has already liked the video
-  //     - If liked, remove like (dislike)
-  //     - If not liked, add like
-  //  Update video document with new like count
-  //  Return success response
 
   const { videoId } = req.params;
 

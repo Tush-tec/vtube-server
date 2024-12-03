@@ -14,6 +14,8 @@ router.use(verifyJwt)
 router.route("/toggle/v/:videoId").post(VideoLike);
 router.route("/toggle/c/:commentId").post(CommentLike);
 router.route("/toggle/t/:tweetId").post(TweetLike);
-router.route("/videos").get(getAllLikedVideo);
+router.route("/videos").get(getAllLikedVideo);  
 
+
+export default  router
 

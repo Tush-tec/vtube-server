@@ -20,6 +20,12 @@ app.use(cookieParser());// From my server i Access User Cookies and set them  >>
 // Routes import
 import userRouter from './routes/user.routes.js';
 import videoRouter from './routes/videoRoutes.js'
+import likeRouter from "./routes/likeRoutes.js"
+import commentRouter from "./routes/commentRoutes.js"
+import playlistRouter from './routes/playlistroutes.js'
+import subscriptionRouter from "./routes/subscriptionRoutes.js"
+import dashboardRouter from "./routes/dashboardRoutes.js"
+import healthCheckRouter from "./routes/healthCheckRoutes.js"
 
 
 
@@ -27,6 +33,12 @@ import videoRouter from './routes/videoRoutes.js'
 
 app.use('/api/v1/users', userRouter)
 app.use('/api/v1/video', videoRouter)
+app.use("/api/v1/like", likeRouter)
+app.use("/api/v1/comment", commentRouter)
+app.use("./api/v1/subscription",subscriptionRouter)
+app.use("./api/v1/dashboard",dashboardRouter)
+app.use("./api/v1/healthCheck",healthCheckRouter)
+app.use("./api/v1/playlist",playlistRouter)
 
 
 

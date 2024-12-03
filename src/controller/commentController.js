@@ -62,7 +62,7 @@ const getvideoComments = asyncHandler(async (req, res) => {
   });
   
 
-const writeComment = asyncHandler(async (req, res) => {
+const addComment = asyncHandler(async (req, res) => {
   try {
     const { videoId } = req.params;
     const { text } = req.body;
@@ -180,6 +180,6 @@ const updateComment = asyncHandler(async (req, res) => {
   });
 export {
    getvideoComments, 
-   writeComment, 
+   addComment, 
    updateComment,
-    deleteComment };
+   deleteComment };

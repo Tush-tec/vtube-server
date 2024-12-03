@@ -5,10 +5,10 @@ import {
     toggleSubscription,
 } from "../controller/subscriptionController.js"
 
-import {verifyJWT} from "../middleware/authenticationMiddleware.js"
+import {verifyJwt} from "../middleware/authenticationMiddleware.js"
 
 const router = Router();
-router.use(verifyJWT); 
+router.use(verifyJwt); 
 
 router
     .route("/c/:channelId")

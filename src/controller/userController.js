@@ -23,19 +23,19 @@ const genrateAccessorRefreshTokens = async (userId) => {
 
     return { accessToken, refreshToken };
   } catch (error) {
-    console.error("Error while generating tokens:", error);
+    // console.error("Error while generating tokens:", error);
     throw new ApiError(500, "Something went wrong while making tokens");
   }
 };
 
-console.log("generateAccessorRefreshToken", genrateAccessorRefreshTokens);
+
 
 const registerUser = asyncHandler(async (req, res) => {
   // get user details from frontend
 
   //  Access all Data through Req; if user data comes from body write req.body and if user data comes from url write req.url  4
   const { userName, email, fullName, password } = req.body;
-  console.log(req.body);
+  // console.log(req.body);
 
   // console.log("user:",userName, "Email:", email, "fullname:", fullName);
 
@@ -107,7 +107,7 @@ const registerUser = asyncHandler(async (req, res) => {
       new ApiResponse(200, checkUserCreatedorNot, "User Register Successful")
     );
 
-  //  if user is create then send response
+  //  if user is create then send responsecon
 });
 
 const loginUser = asyncHandler(async (req, res) => {
@@ -163,7 +163,7 @@ const loginUser = asyncHandler(async (req, res) => {
 //  Logout User
 
 const loggedOutUser = asyncHandler(async (req, res) => {
-  console.log(req.user._id);
+  // console.log(req.user._id);
 
   try {
     await User.findByIdAndUpdate(

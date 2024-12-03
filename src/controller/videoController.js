@@ -81,6 +81,7 @@ const getAllVideo = asyncHandler(async (req, res, next) => {
 
 // Get Video by ID
 const getVideoById = asyncHandler(async (req, res) => {
+  
   try {
     const { videoId } = req.params;
 

@@ -8,7 +8,7 @@ import { uploadOnCloudinary } from "../utils/cloudinary.service.js";
 
 // Fetch all videos
 const getAllVideo = asyncHandler(async (req, res, next) => {
-
+  
   const { page = 1, limit = 10, query, sortBy, sortType } = req.query;
   const user = req.user?._id;
 
@@ -61,7 +61,9 @@ const getAllVideo = asyncHandler(async (req, res, next) => {
   console.log(count);
   
     // Send Response
-    return res.json(
+    return res
+    .status(200)
+    .json(
       new ApiResponse(200, {
         videos,
         pagination: {
@@ -254,7 +256,7 @@ const togglePublishStatus = asyncHandler(async (req, res) => {
       throw new ApiError(404, "Video not found");
     }
 
-    if (video.owner.toString() !== req.user._id.toString()) {
+    if (video.owner.toString() !== req.user?._id.toString()) {
       throw new ApiError(401, "Unauthorized request!");
     }
 

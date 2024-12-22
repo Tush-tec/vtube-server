@@ -7,7 +7,7 @@ import cookieParser from 'cookie-parser';
 const app = express()
 
 app.use(cors({
-    origin: process.env.CORS_ORIGIN,
+    origin: "http://localhost:3000",
     credentials: true
 }))
 
@@ -35,8 +35,8 @@ app.use('/api/v1/users', userRouter)
 app.use('/api/v1/video', videoRouter)
 app.use("/api/v1/like", likeRouter)
 app.use("/api/v1/comment", commentRouter)
-app.use("./api/v1/subscription",subscriptionRouter)
-app.use("./api/v1/dashboard",dashboardRouter)
+app.use("/api/v1/subscription",subscriptionRouter)
+app.use("/api/v1/dashboard",dashboardRouter)
 app.use("./api/v1/healthCheck",healthCheckRouter)
 app.use("./api/v1/playlist",playlistRouter)
 

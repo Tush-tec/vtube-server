@@ -8,6 +8,7 @@ import mongoose from "mongoose";
 
 // Seprate Method of Genrate Access or Refresh Token
 const genrateAccessorRefreshTokens = async (userId) => {
+  
   try {
     const user = await User.findById(userId);
 
@@ -111,11 +112,12 @@ const registerUser = asyncHandler(async (req, res) => {
 });
 
 const loginUser = asyncHandler(async (req, res) => {
+
   const { userName, email, password } = req.body;
   if (!(userName || email || password)) {
     throw new ApiError(404, "userName or Email is required");
   }
-
+  
   const user = await User.findOne({
     $or: [{ userName }, { email }],
   });
@@ -143,10 +145,11 @@ const loginUser = asyncHandler(async (req, res) => {
   };
 
   // Send Respone
+  // res.cookie('accessToken',accessToken)
   return res
     .status(200)
-    .cookie("accessToken", accessToken, options)
-    .cookie("refreshToken", refreshToken, options)
+    .cookie("accessToken", accessToken)
+    .cookie("refreshToken", refreshToken)
     .json(
       new ApiResponse(
         200,
@@ -495,6 +498,33 @@ const getUserWatchHistory = asyncHandler(async (req, res) => {
     );
 });
 
+
+// controller/userController.js
+
+//  const checkAuth = (req, res) => {
+//   try {
+//     // If verifyJwt passed, this means the user is authenticated
+//     const user = req.user; // 'req.user' will be populated by 'verifyJwt'
+    
+//     return res.status(200).json({
+//       isAuthenticated: true,
+//       user: {
+//         userName: user.userName,
+//         fullName: user.fullName,
+//         email: user.email,
+//         avatar: user.avatar,
+//         coverImage: user.coverImage
+//       }
+//     });
+//   } catch (error) {
+//     return res.status(401).json({
+//       isAuthenticated: false,
+//       message: "Authentication failed"
+//     });
+//   }
+// };
+
+
 export {
   registerUser,
   loginUser,
@@ -507,4 +537,5 @@ export {
   updateCoverImage,
   getUserChannelProfile,
   getUserWatchHistory,
+
 };

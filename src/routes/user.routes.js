@@ -34,6 +34,8 @@ router.route('/coverimage').patch(verifyJwt,upload.single("coverImage"), updateC
 router.route('/c/:userName').get(verifyJwt, getUserChannelProfile)
 router.route('/history').get(verifyJwt,getUserWatchHistory)
 
+// For Session travel on frontend.
+// router.route('/check-auth').get(verifyJwt, checkAuth); 
 
 
 export default router;

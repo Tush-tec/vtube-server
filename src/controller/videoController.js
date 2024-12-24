@@ -10,6 +10,7 @@ import { uploadOnCloudinary } from "../utils/cloudinary.service.js";
 const getAllVideo = asyncHandler(async (req, res, next) => {
   
   const { page = 1, limit = 10, query, sortBy, sortType } = req.query;
+  
   const user = req.user?._id;
 
   // Check if user exists
@@ -83,38 +84,55 @@ const getAllVideo = asyncHandler(async (req, res, next) => {
 
 // Get Video by ID
 const getVideoById = asyncHandler(async (req, res) => {
-  
   try {
     const { videoId } = req.params;
 
-    // Validate video ID
+
     if (!mongoose.isValidObjectId(videoId)) {
-      throw new ApiError(400, "Invalid video ID");
+      return res.status(400).json({
+        status: 400,
+        message: "Invalid video ID"
+      });
     }
 
-    // Fetch the video and populate user details (name and email)
-    const video = await Video.findById(videoId)
-      .populate("user", "name email")  // Populating the 'user' field with only 'name' and 'email' fields
 
-    // If video not found, throw error
-    if (!video) {
-      throw new ApiError(404, "Video not found");
+    const video = await Video.aggregate([
+      { $match: { _id: new mongoose.Types.ObjectId(videoId) } }, 
+      {
+        $lookup: {
+          from: "users", 
+          localField: "owner", 
+          foreignField: "_id", 
+          as: "ownerDetails", 
+        },
+      },
+      { $unwind: { path: "$ownerDetails", preserveNullAndEmptyArrays: true } }, 
+    ]);
+
+
+    if (!video || video.length === 0) {
+      return res.status(404).json({
+        status: 404,
+        message: "Video not found"
+      });
     }
 
-    // Return the response with video and populated user details
+
     return res.status(200).json({
       status: 200,
-      data: video,  // Return the video object with populated user details
+      data: video[0], 
       message: "Video fetched successfully"
     });
   } catch (error) {
-    console.error(error); // For debugging
-    throw new ApiError(
-      500,
-      error.message || "Video fetch by ID failed due to internal server error"
-    );
+    console.error(error); 
+
+    return res.status(500).json({
+      status: 500,
+      message: error.message || "Video fetch by ID failed due to internal server error"
+    });
   }
 });
+
 
 // Publish Video
 const publishVideo = asyncHandler(async (req, res) => {

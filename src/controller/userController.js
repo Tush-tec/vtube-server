@@ -499,30 +499,8 @@ const getUserWatchHistory = asyncHandler(async (req, res) => {
 });
 
 
-// controller/userController.js
 
-//  const checkAuth = (req, res) => {
-//   try {
-//     // If verifyJwt passed, this means the user is authenticated
-//     const user = req.user; // 'req.user' will be populated by 'verifyJwt'
-    
-//     return res.status(200).json({
-//       isAuthenticated: true,
-//       user: {
-//         userName: user.userName,
-//         fullName: user.fullName,
-//         email: user.email,
-//         avatar: user.avatar,
-//         coverImage: user.coverImage
-//       }
-//     });
-//   } catch (error) {
-//     return res.status(401).json({
-//       isAuthenticated: false,
-//       message: "Authentication failed"
-//     });
-//   }
-// };
+
 
 
 export {
